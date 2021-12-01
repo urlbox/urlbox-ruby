@@ -1,6 +1,6 @@
 class UrlboxClient
-  BASE_API_URL = "https://api.urlbox.io/v1/"
-  POST_END_POINT = "render"
+  BASE_API_URL = 'https://api.urlbox.io/v1/'.freeze
+  POST_END_POINT = 'render'.freeze
 
   def initialize(api_key:, api_secret: nil, api_host_name: nil)
     @api_key = api_key
