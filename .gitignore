@@ -1,0 +1,5 @@
+urlbox-*.gem
+Gemfile.lock
+/.bundle/
+coverage/
+.idea/
