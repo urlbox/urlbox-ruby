@@ -1,6 +1,7 @@
 require 'climate_control'
 require 'minitest/autorun'
 require 'urlbox_client'
+require 'webmock/minitest'
 
 class UrlboxClientTest < Minitest::Test
   # test_init
@@ -87,5 +88,105 @@ class UrlboxClientTest < Minitest::Test
 
       assert_equal env_var_api_host_name, urlbox_client.instance_variable_get(:@base_api_url)
     end
+  end
+
+  # Test get
+  def test_successful_get_request
+    param_api_key = 'KEY'
+    options = { url: 'https://www.example.com' }
+
+    stub_request(:get, "https://api.urlbox.io/v1/#{param_api_key}/png?format=png&url=https://www.example.com")
+      .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
+
+    urlbox_client = UrlboxClient.new(api_key: param_api_key)
+
+    response = urlbox_client.get(options)
+
+    assert response.status == 200
+    assert response.headers['Content-Type'].include?('png')
+  end
+
+  def test_successful_get_request_no_schema_url
+    param_api_key = 'KEY'
+    options = { url: 'www.example.com' }
+
+    stub_request(:get, "https://api.urlbox.io/v1/#{param_api_key}/png?format=png&url=http://www.example.com")
+      .to_return(status: 200, body: '', headers: {})
+
+    urlbox_client = UrlboxClient.new(api_key: param_api_key)
+
+    response = urlbox_client.get(options)
+
+    assert response.status == 200
+  end
+
+  def test_unsuccessful_get_invalid_url
+    param_api_key = 'KEY'
+    options = { url: 'FOO' }
+
+    urlbox_client = UrlboxClient.new(api_key: param_api_key)
+
+    e = assert_raises Urlbox::UrlboxError do
+      urlbox_client.get(options)
+    end
+
+    assert_equal e.message, 'Invalid URL: http://FOO'
+  end
+
+  def test_unsuccessful_get_missing_url_or_html_entry_in_options
+    param_api_key = 'KEY'
+    options = { format: 'png' }
+
+    urlbox_client = UrlboxClient.new(api_key: param_api_key)
+
+    e = assert_raises Urlbox::UrlboxError do
+      urlbox_client.get(options)
+    end
+
+    assert_equal e.message, 'Missing url or html entry in options'
+  end
+
+  def test_successful_get_request_authenticated
+    api_key = 'KEY'
+    api_secret = 'SECRET'
+    options = { url: 'https://www.example.com', format: 'png' }
+    url_encoded_options = URI.encode_www_form(options)
+    token = OpenSSL::HMAC.hexdigest('sha1', api_secret.encode('UTF-8'), url_encoded_options.encode('UTF-8'))
+
+    stub_request(:get, "https://api.urlbox.io/v1/KEY/#{token}/png?format=png&url=https://www.example.com")
+      .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
+
+    urlbox_client = UrlboxClient.new(api_key: api_key, api_secret: api_secret)
+
+    response = urlbox_client.get(options)
+
+    assert response.status == 200
+    assert response.headers['Content-Type'].include?('png')
+  end
+
+  # test generate_url
+  def test_generate_url_with_only_api_key
+    api_key = 'KEY'
+    options = { url: 'https://www.example.com', format: 'png' }
+
+    urlbox_client = UrlboxClient.new(api_key: api_key)
+
+    urlbox_url = urlbox_client.generate_url(options)
+
+    assert_equal 'https://api.urlbox.io/v1/KEY/png?url=https%3A%2F%2Fwww.example.com&format=png', urlbox_url
+  end
+
+  def test_generate_url_with_api_key_and_secret
+    api_key = 'KEY'
+    api_secret = 'SECRET'
+    options = { url: 'https://www.example.com', format: 'png' }
+    url_encoded_options = URI.encode_www_form(options)
+    token = OpenSSL::HMAC.hexdigest('sha1', api_secret.encode('UTF-8'), url_encoded_options.encode('UTF-8'))
+
+    urlbox_client = UrlboxClient.new(api_key: api_key, api_secret: api_secret)
+
+    urlbox_url = urlbox_client.generate_url(options)
+
+    assert_equal "https://api.urlbox.io/v1/KEY/#{token}/png?url=https%3A%2F%2Fwww.example.com&format=png", urlbox_url
   end
 end

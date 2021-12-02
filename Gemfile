@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'http'
+
 group :development do
   gem 'minitest'
   gem 'rake'

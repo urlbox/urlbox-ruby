@@ -1,8 +1,21 @@
+---
 AllCops:
   Exclude:
     - '*.gemspec'
   TargetRubyVersion: 2.5
-Style/FrozenStringLiteralComment:
-  Enabled: false
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - test/**/*
+Metrics/ClassLength:
+  Enabled: true
+  Exclude:
+    - test/**/*
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - test/**/*
 Style/Documentation:
+  Enabled: false
+Style/FrozenStringLiteralComment:
   Enabled: false
