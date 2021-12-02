@@ -14,6 +14,36 @@ class UrlboxClient
     @base_api_url = init_base_api_url(api_host_name)
   end
 
+  def get(options)
+    HTTP.timeout(read: 100)
+        .get(generate_url(options))
+  end
+
+  # TODO
+  # def delete(options)
+  # end
+
+  # def head(options)
+  # end
+
+  # def post(options)
+  # end
+
+  # TODO: extract out to its own class
+  def generate_url(options)
+    processed_options, format = process_options(options)
+
+    if @api_secret
+      "#{@base_api_url}" \
+      "#{@api_key}/#{token(processed_options)}/#{format}" \
+      "?#{processed_options}"
+    else
+      "#{@base_api_url}" \
+      "#{@api_key}/#{format}" \
+      "?#{processed_options}"
+    end
+  end
+
   private
 
   def init_base_api_url(api_host_name)
@@ -24,5 +54,44 @@ class UrlboxClient
     else
       BASE_API_URL
     end
+  end
+
+  def process_options(options)
+    raise_key_error_if_missing_required_keys(options)
+
+    options[:url] = process_url(options[:url]) if options[:url]
+
+    format = options.fetch(:format, 'png')
+    options[:format] = format
+
+    [URI.encode_www_form(options), format]
+  end
+
+  def prepend_schema(url)
+    url.start_with?('http') ? url : "http://#{url}"
+  end
+
+  def process_url(url)
+    url_parsed = prepend_schema(url.strip)
+
+    raise Urlbox::UrlboxError, "Invalid URL: #{url_parsed}" unless valid_url?(url_parsed)
+
+    url_parsed
+  end
+
+  def raise_key_error_if_missing_required_keys(options)
+    return unless options[:url].nil? && options[:html].nil?
+
+    raise Urlbox::UrlboxError, 'Missing url or html entry in options'
+  end
+
+  def token(url_encoded_options)
+    OpenSSL::HMAC.hexdigest('sha1', @api_secret.encode('UTF-8'), url_encoded_options.encode('UTF-8'))
+  end
+
+  def valid_url?(url)
+    parsed_url = URI.parse(url)
+
+    !parsed_url.host.nil? && parsed_url.host.include?('.')
   end
 end
