@@ -19,3 +19,7 @@ Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
+Style/StringLiterals:
+  Enabled: true
+  Exclude:
+    - test/**/*

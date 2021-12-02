@@ -1,3 +1,4 @@
+require 'http'
 require 'urlbox/errors'
 
 class UrlboxClient
@@ -15,19 +16,36 @@ class UrlboxClient
   end
 
   def get(options)
-    HTTP.timeout(read: 100)
-        .get(generate_url(options))
+    HTTP.timeout(100).follow.get(generate_url(options))
   end
 
-  # TODO
-  # def delete(options)
-  # end
+  def delete(options)
+    processed_options, format = process_options(options)
 
-  # def head(options)
-  # end
+    HTTP.delete("#{@base_api_url}#{@api_key}/#{format}?#{processed_options}")
+  end
 
-  # def post(options)
-  # end
+  def head(options)
+    processed_options, format = process_options(options)
+
+    HTTP.timeout(100)
+        .follow
+        .head("#{@base_api_url}#{@api_key}/#{format}?#{processed_options}")
+  end
+
+  def post(options)
+    raise Urlbox::UrlboxError, missing_api_secret_error_message if @api_secret.nil?
+
+    unless options.key?(:webhook_url)
+      warn('webhook_url not supplied, you will need to poll the statusUrl in order to get your result')
+    end
+
+    processed_options, _format = process_options_post_request(options)
+
+    HTTP.timeout(5)
+        .headers('Content-Type': 'application/json', 'Authorization': "Bearer #{@api_secret}")
+        .post("#{@base_api_url}#{POST_END_POINT}", json: processed_options)
+  end
 
   # TODO: extract out to its own class
   def generate_url(options)
@@ -56,7 +74,14 @@ class UrlboxClient
     end
   end
 
-  def process_options(options)
+  def missing_api_secret_error_message
+    <<-ERROR_MESSAGE
+      Missing api_secret when initialising client or ENV['URLBOX_API_SECRET'] not set.
+      Required for authorised post request.
+    ERROR_MESSAGE
+  end
+
+  def process_options(options, url_encode_options: true)
     raise_key_error_if_missing_required_keys(options)
 
     options[:url] = process_url(options[:url]) if options[:url]
@@ -64,7 +89,15 @@ class UrlboxClient
     format = options.fetch(:format, 'png')
     options[:format] = format
 
-    [URI.encode_www_form(options), format]
+    if url_encode_options
+      [URI.encode_www_form(options), format]
+    else
+      [options, format]
+    end
+  end
+
+  def process_options_post_request(options)
+    process_options(options, url_encode_options: false)
   end
 
   def prepend_schema(url)
