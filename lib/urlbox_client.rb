@@ -87,14 +87,12 @@ class UrlboxClient
     raise_key_error_if_missing_required_keys(processed_options)
 
     processed_options[:url] = process_url(processed_options[:url]) if processed_options[:url]
-
-    format = processed_options.fetch(:format, 'png')
-    processed_options[:format] = format
+    processed_options[:format] = processed_options.fetch(:format, 'png')
 
     if url_encode_options
-      [URI.encode_www_form(processed_options), format]
+      [URI.encode_www_form(processed_options), processed_options[:format]]
     else
-      [processed_options, format]
+      [processed_options, processed_options[:format]]
     end
   end
 
