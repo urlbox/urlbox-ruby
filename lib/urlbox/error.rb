@@ -1,5 +1,5 @@
 module Urlbox
-  class UrlboxError < StandardError
+  class Error < StandardError
     def self.missing_api_secret_error_message
       <<-ERROR_MESSAGE
         Missing api_secret when initialising client or ENV['URLBOX_API_SECRET'] not set.
