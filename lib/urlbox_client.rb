@@ -21,13 +21,11 @@ class UrlboxClient
 
   def delete(options)
     processed_options, format = process_options(options)
-
     HTTP.delete("#{@base_api_url}#{@api_key}/#{format}?#{processed_options}")
   end
 
   def head(options)
     processed_options, format = process_options(options)
-
     HTTP.timeout(100)
         .follow
         .head("#{@base_api_url}#{@api_key}/#{format}?#{processed_options}")
@@ -41,7 +39,6 @@ class UrlboxClient
     end
 
     processed_options, _format = process_options_post_request(options)
-
     HTTP.timeout(5)
         .headers('Content-Type': 'application/json', 'Authorization': "Bearer #{@api_secret}")
         .post("#{@base_api_url}#{POST_END_POINT}", json: processed_options)
@@ -59,6 +56,15 @@ class UrlboxClient
       "#{@base_api_url}" \
       "#{@api_key}/#{format}" \
       "?#{processed_options}"
+    end
+  end
+
+  # class methods to allow easy env var based usage
+  class << self
+    %i[get delete head post].each do |method|
+      define_method(method) do |options|
+        new.send(method, options)
+      end
     end
   end
 
@@ -124,7 +130,6 @@ class UrlboxClient
 
   def valid_url?(url)
     parsed_url = URI.parse(url)
-
     !parsed_url.host.nil? && parsed_url.host.include?('.')
   end
 end
