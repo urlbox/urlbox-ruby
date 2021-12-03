@@ -164,6 +164,122 @@ class UrlboxClientTest < Minitest::Test
     assert response.headers['Content-Type'].include?('png')
   end
 
+  def test_successful_get_request_options_with_string_keys
+    param_api_key = 'KEY'
+    options = { 'url' => 'https://www.example.com' }
+
+    stub_request(:get, "https://api.urlbox.io/v1/#{param_api_key}/png?format=png&url=https://www.example.com")
+      .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
+
+    urlbox_client = UrlboxClient.new(api_key: param_api_key)
+
+    response = urlbox_client.get(options)
+
+    assert response.status == 200
+    assert response.headers['Content-Type'].include?('png')
+  end
+
+  # test delete
+  def test_delete_request
+    api_key = 'KEY'
+    options = { url: 'https://www.example.com' }
+
+    stub_request(:delete, 'https://api.urlbox.io/v1/KEY/png?format=png&url=https://www.example.com')
+      .to_return(status: 200, body: '', headers: {})
+
+    urlbox_client = UrlboxClient.new(api_key: api_key)
+
+    response = urlbox_client.delete(options)
+
+    assert response.status == 200
+  end
+
+  # test head
+  def test_head_request
+    api_key = 'KEY'
+    format = %w[png jpg jpeg avif webp pdf svg html].sample
+    url = 'https://www.example.com'
+
+    options = {
+      url: url,
+      format: format,
+      full_page: [true, false].sample,
+      width: [500, 700].sample
+    }
+
+    stub_request(:head, "https://api.urlbox.io/v1/#{api_key}/#{format}?format=#{format}&full_page=#{options[:full_page]}&url=#{url}&width=#{options[:width]}")
+      .to_return(status: 200, body: '', headers: {})
+
+    urlbox_client = UrlboxClient.new(api_key: api_key)
+
+    response = urlbox_client.head(options)
+
+    assert response.status == 200
+  end
+
+  # test post
+  def test_post_request_successful
+    api_key = 'KEY'
+    api_secret = 'SECRET'
+    options = {
+      url: 'https://www.example.com',
+      webhook_url: 'https://www.example.com/webhook'
+    }
+
+    stub_request(:post, 'https://api.urlbox.io/v1/render')
+      .with(
+        body: "{\"url\":\"https://www.example.com\",\"webhook_url\":\"https://www.example.com/webhook\",\"format\":\"png\"}",
+        headers: {
+          'Authorization' => 'Bearer SECRET',
+          'Content-Type' => 'application/json'
+        }
+      ).to_return(status: 201)
+
+    urlbox_client = UrlboxClient.new(api_key: api_key, api_secret: api_secret)
+
+    response = urlbox_client.post(options)
+
+    assert response.status == 201
+  end
+
+  def test_post_request_successful_warning_missing_webhook_url
+    api_key = 'KEY'
+    api_secret = 'SECRET'
+    options = { url: 'https://www.example.com' }
+
+    stub_request(:post, 'https://api.urlbox.io/v1/render')
+      .with(
+        body: "{\"url\":\"https://www.example.com\",\"format\":\"png\"}",
+        headers: {
+          'Authorization' => 'Bearer SECRET',
+          'Content-Type' => 'application/json'
+        }
+      ).to_return(status: 201)
+
+    urlbox_client = UrlboxClient.new(api_key: api_key, api_secret: api_secret)
+
+    response = urlbox_client.post(options)
+
+    assert response.status == 201
+    # Wasn't able to test the warning message
+  end
+
+  def test_post_request_unsuccessful_missing_api_secret
+    api_key = 'KEY'
+    options = {
+      url: 'https://www.example.com',
+      webhook_url: 'https://www.example.com/webhook'
+    }
+
+    urlbox_client = UrlboxClient.new(api_key: api_key)
+
+    e = assert_raises Urlbox::UrlboxError do
+      urlbox_client.post(options)
+    end
+
+    assert e.message.include? 'Missing api_secret'
+  end
+
   # test generate_url
   def test_generate_url_with_only_api_key
     api_key = 'KEY'
