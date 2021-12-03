@@ -365,7 +365,6 @@ class UrlboxClientTest < Minitest::Test
     }
 
     ClimateControl.modify URLBOX_API_KEY: api_key, URLBOX_API_SECRET: api_secret do
-
       stub_request(:post, 'https://api.urlbox.io/v1/render')
         .with(
           body: "{\"url\":\"https://www.example.com\",\"webhook_url\":\"https://www.example.com/webhook\",\"format\":\"png\"}",

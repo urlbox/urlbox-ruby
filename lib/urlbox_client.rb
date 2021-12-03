@@ -32,7 +32,7 @@ class UrlboxClient
   end
 
   def post(options)
-    raise Urlbox::UrlboxError, missing_api_secret_error_message if @api_secret.nil?
+    raise Urlbox::UrlboxError, Urlbox::UrlboxError.missing_api_secret_error_message if @api_secret.nil?
 
     unless options.key?(:webhook_url)
       warn('webhook_url not supplied, you will need to poll the statusUrl in order to get your result')
@@ -78,13 +78,6 @@ class UrlboxClient
     else
       BASE_API_URL
     end
-  end
-
-  def missing_api_secret_error_message
-    <<-ERROR_MESSAGE
-      Missing api_secret when initialising client or ENV['URLBOX_API_SECRET'] not set.
-      Required for authorised post request.
-    ERROR_MESSAGE
   end
 
   def process_options(options, url_encode_options: true)
