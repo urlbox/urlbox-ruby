@@ -3,3 +3,7 @@ Gemfile.lock
 /.bundle/
 coverage/
 .idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
