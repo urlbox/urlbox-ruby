@@ -82,17 +82,19 @@ class UrlboxClient
   end
 
   def process_options(options, url_encode_options: true)
-    raise_key_error_if_missing_required_keys(options)
+    processed_options = options.transform_keys(&:to_sym)
 
-    options[:url] = process_url(options[:url]) if options[:url]
+    raise_key_error_if_missing_required_keys(processed_options)
 
-    format = options.fetch(:format, 'png')
-    options[:format] = format
+    processed_options[:url] = process_url(processed_options[:url]) if processed_options[:url]
+
+    format = processed_options.fetch(:format, 'png')
+    processed_options[:format] = format
 
     if url_encode_options
-      [URI.encode_www_form(options), format]
+      [URI.encode_www_form(processed_options), format]
     else
-      [options, format]
+      [processed_options, format]
     end
   end
 
