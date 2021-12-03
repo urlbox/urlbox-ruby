@@ -305,4 +305,78 @@ class UrlboxClientTest < Minitest::Test
 
     assert_equal "https://api.urlbox.io/v1/KEY/#{token}/png?url=https%3A%2F%2Fwww.example.com&format=png", urlbox_url
   end
+
+  # test module like methods
+  # get
+  def test_successful_class_get_request
+    env_var_api_key = 'ENV_VAR_KEY'
+    options = { url: 'https://www.example.com' }
+
+    ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
+      stub_request(:get, "https://api.urlbox.io/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
+        .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
+
+      response = UrlboxClient.get(options)
+
+      assert response.status == 200
+      assert response.headers['Content-Type'].include?('png')
+    end
+  end
+
+  # delete
+  def test_successful_class_delete_request
+    env_var_api_key = 'ENV_VAR_KEY'
+    options = { url: 'https://www.example.com' }
+
+    ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
+      stub_request(:delete, "https://api.urlbox.io/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
+        .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
+
+      response = UrlboxClient.delete(options)
+
+      assert response.status == 200
+      assert response.headers['Content-Type'].include?('png')
+    end
+  end
+
+  # head
+  def test_successful_class_head_request
+    env_var_api_key = 'ENV_VAR_KEY'
+    options = { url: 'https://www.example.com' }
+
+    ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
+      stub_request(:head, "https://api.urlbox.io/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
+        .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
+
+      response = UrlboxClient.head(options)
+
+      assert response.status == 200
+      assert response.headers['Content-Type'].include?('png')
+    end
+  end
+
+  # post
+  def test_successful_class_post_request
+    api_key = 'KEY'
+    api_secret = 'SECRET'
+    options = {
+      url: 'https://www.example.com',
+      webhook_url: 'https://www.example.com/webhook'
+    }
+
+    ClimateControl.modify URLBOX_API_KEY: api_key, URLBOX_API_SECRET: api_secret do
+      stub_request(:post, 'https://api.urlbox.io/v1/render')
+        .with(
+          body: "{\"url\":\"https://www.example.com\",\"webhook_url\":\"https://www.example.com/webhook\",\"format\":\"png\"}",
+          headers: {
+            'Authorization' => 'Bearer SECRET',
+            'Content-Type' => 'application/json'
+          }
+        ).to_return(status: 201)
+
+      response = UrlboxClient.post(options)
+
+      assert response.status == 201
+    end
+  end
 end

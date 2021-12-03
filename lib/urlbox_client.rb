@@ -21,27 +21,24 @@ class UrlboxClient
 
   def delete(options)
     processed_options, format = process_options(options)
-
     HTTP.delete("#{@base_api_url}#{@api_key}/#{format}?#{processed_options}")
   end
 
   def head(options)
     processed_options, format = process_options(options)
-
     HTTP.timeout(100)
         .follow
         .head("#{@base_api_url}#{@api_key}/#{format}?#{processed_options}")
   end
 
   def post(options)
-    raise Urlbox::UrlboxError, missing_api_secret_error_message if @api_secret.nil?
+    raise Urlbox::UrlboxError, Urlbox::UrlboxError.missing_api_secret_error_message if @api_secret.nil?
 
     unless options.key?(:webhook_url)
       warn('webhook_url not supplied, you will need to poll the statusUrl in order to get your result')
     end
 
     processed_options, _format = process_options_post_request(options)
-
     HTTP.timeout(5)
         .headers('Content-Type': 'application/json', 'Authorization': "Bearer #{@api_secret}")
         .post("#{@base_api_url}#{POST_END_POINT}", json: processed_options)
@@ -62,6 +59,15 @@ class UrlboxClient
     end
   end
 
+  # class methods to allow easy env var based usage
+  class << self
+    %i[get delete head post].each do |method|
+      define_method(method) do |options|
+        new.send(method, options)
+      end
+    end
+  end
+
   private
 
   def init_base_api_url(api_host_name)
@@ -72,13 +78,6 @@ class UrlboxClient
     else
       BASE_API_URL
     end
-  end
-
-  def missing_api_secret_error_message
-    <<-ERROR_MESSAGE
-      Missing api_secret when initialising client or ENV['URLBOX_API_SECRET'] not set.
-      Required for authorised post request.
-    ERROR_MESSAGE
   end
 
   def process_options(options, url_encode_options: true)
@@ -124,7 +123,6 @@ class UrlboxClient
 
   def valid_url?(url)
     parsed_url = URI.parse(url)
-
     !parsed_url.host.nil? && parsed_url.host.include?('.')
   end
 end
