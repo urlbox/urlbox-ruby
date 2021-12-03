@@ -3,6 +3,10 @@ AllCops:
   Exclude:
     - '*.gemspec'
   TargetRubyVersion: 2.5
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - test/**/*
 Metrics/BlockLength:
   Enabled: true
   Exclude:
@@ -18,6 +22,9 @@ Metrics/MethodLength:
 Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
+  Enabled: false
+  Exclude:
+Style/GuardClause:
   Enabled: false
 Style/StringLiterals:
   Enabled: true

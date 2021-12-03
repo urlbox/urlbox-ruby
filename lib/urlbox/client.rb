@@ -1,5 +1,5 @@
 require 'http'
-require 'urlbox/error'
+require 'urlbox/errors'
 
 module Urlbox
   class Client

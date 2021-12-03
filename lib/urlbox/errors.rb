@@ -7,4 +7,6 @@ module Urlbox
       ERROR_MESSAGE
     end
   end
+
+  class InvalidHeaderSignatureError < StandardError; end
 end
