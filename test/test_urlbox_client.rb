@@ -380,5 +380,17 @@ module Urlbox
         assert response.status == 201
       end
     end
+
+    # generate_url
+    def test_successful_class_generate_url
+      env_var_api_key = 'KEY'
+      options = { url: 'https://www.example.com' }
+
+      ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
+        urlbox_url = Urlbox::Client.generate_url(options)
+
+        assert_equal 'https://api.urlbox.io/v1/KEY/png?url=https%3A%2F%2Fwww.example.com&format=png', urlbox_url
+      end
+    end
   end
 end
