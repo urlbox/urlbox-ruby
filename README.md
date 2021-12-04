@@ -61,7 +61,7 @@ screenshot_url = Urlbox::Client.generate_url({url: "http://example.com/"})
 ```ruby
 require  'urlbox/client'
 
-urlbox_client = Urlbox::Client(api_key: 'YOUR_API_KEY', api_secret='YOUR_API_SECRET')
+urlbox_client = Urlbox::Client(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
 
 screenshot_url = urlbox_client.generate_url({url: "http://example.com/"})
 
