@@ -45,7 +45,6 @@ module Urlbox
           .post("#{@base_api_url}#{POST_END_POINT}", json: processed_options)
     end
 
-    # TODO: extract out to its own class
     def generate_url(options)
       processed_options, format = process_options(options)
 
@@ -62,7 +61,7 @@ module Urlbox
 
     # class methods to allow easy env var based usage
     class << self
-      %i[get delete head post].each do |method|
+      %i[delete head get post generate_url].each do |method|
         define_method(method) do |options|
           new.send(method, options)
         end
