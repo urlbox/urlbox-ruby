@@ -180,6 +180,23 @@ module Urlbox
       assert response.headers['Content-Type'].include?('png')
     end
 
+    def test_get_with_header_array_in_options
+      api_key = 'KEY'
+      options = {
+        url: 'https://www.example.com',
+        header: ["x-my-first-header=somevalue", "x-my-second-header=someothervalue"]
+      }
+
+      urlbox_client = Urlbox::Client.new(api_key: api_key)
+
+      stub_request(:get, "https://api.urlbox.io/v1/KEY/png?format=png&header=x-my-second-header=someothervalue&url=https://www.example.com")
+        .to_return(status: 200, body: "", headers: {})
+
+      response = urlbox_client.get(options)
+
+      assert response.status == 200
+    end
+
     # test delete
     def test_delete_request
       api_key = 'KEY'

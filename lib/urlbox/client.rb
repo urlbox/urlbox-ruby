@@ -79,7 +79,7 @@ module Urlbox
         BASE_API_URL
       end
     end
-    
+
     def prepend_schema(url)
       url.start_with?('http') ? url : "http://#{url}"
     end
