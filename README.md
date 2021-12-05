@@ -45,7 +45,7 @@ For use directly in HTML templates, the browser etc.
 require  'urlbox/client'
 
 # Initialise the UrlboxClient
-urlbox_client = Urlbox::Client(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
+urlbox_client = Urlbox::Client.new(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
 
 # Generate a screenshot url
 screenshot_url = urlbox_client.generate_url({url: 'http://example.com/'})
@@ -61,7 +61,7 @@ In your erb/html template, use the screenshot_url generated above:
 ```ruby
 require  'urlbox/client'
 
-urlbox_client = Urlbox::Client(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
+urlbox_client = Urlbox::Client.newpay(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
 
 # Make a request to the UrlBox API
 response = Urlbox::Client.get({url: 'http://example.com/'})
@@ -197,15 +197,15 @@ header_signature = "t=1637857959,sha256=1d721f..."
 
 # the raw JSON payload from the webhook request body
 payload = {
-	"event": "render.succeeded",
-	"renderId": "794383cd-b09e-4aef-a12b-fadf8aad9d63",
-	"result": {
-		"renderUrl": "https://renders.urlbox.io/urlbox1/renders/foo.png"
-	},
-	"meta": {
-		"startTime": "2021-11-24T16:49:48.307Z",
-		"endTime": "2021-11-24T16:49:53.659Z",
-	},
+  "event": "render.succeeded",
+  "renderId": "794383cd-b09e-4aef-a12b-fadf8aad9d63",
+  "result": {
+    "renderUrl": "https://renders.urlbox.io/urlbox1/renders/foo.png"
+  },
+  "meta": {
+    "startTime": "2021-11-24T16:49:48.307Z",
+    "endTime": "2021-11-24T16:49:53.659Z",
+  },
 }
 
 # Your webhook secret - coming soon.
