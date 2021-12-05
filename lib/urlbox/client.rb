@@ -79,6 +79,10 @@ module Urlbox
         BASE_API_URL
       end
     end
+    
+    def prepend_schema(url)
+      url.start_with?('http') ? url : "http://#{url}"
+    end
 
     def process_options(options, url_encode_options: true)
       processed_options = options.transform_keys(&:to_sym)
@@ -97,10 +101,6 @@ module Urlbox
 
     def process_options_post_request(options)
       process_options(options, url_encode_options: false)
-    end
-
-    def prepend_schema(url)
-      url.start_with?('http') ? url : "http://#{url}"
     end
 
     def process_url(url)
