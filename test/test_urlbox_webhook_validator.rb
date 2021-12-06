@@ -45,14 +45,14 @@ module Urlbox
 
       header_signature = "t=#{timestamp_one_minute_ago},sha256=#{signature_generated}"
 
-      assert Urlbox::WebhookValiator.call(header_signature, payload, webhook_secret)
+      assert Urlbox::WebhookValidator.call(header_signature, payload, webhook_secret)
     end
 
     def test_call_invalid_signature
       header_signature = "INVALID_SIGNATURE"
 
       assert_raises Urlbox::InvalidHeaderSignatureError do
-        Urlbox::WebhookValiator.call(header_signature, payload, webhook_secret)
+        Urlbox::WebhookValidator.call(header_signature, payload, webhook_secret)
       end
     end
 
@@ -60,7 +60,7 @@ module Urlbox
       header_signature = "t=#{timestamp_one_minute_ago},sha256=930ee08957512f247e289703ac951fc60da1e2d12919bfd518d90513b0687ee0"
 
       e = assert_raises Urlbox::InvalidHeaderSignatureError do
-        Urlbox::WebhookValiator.call(header_signature, payload, webhook_secret)
+        Urlbox::WebhookValidator.call(header_signature, payload, webhook_secret)
       end
 
       assert_equal "Invalid signature", e.message
@@ -70,7 +70,7 @@ module Urlbox
       header_signature = "t=#{timestamp_one_minute_ago},sha256=invalid_hash_regex"
 
       e = assert_raises Urlbox::InvalidHeaderSignatureError do
-        Urlbox::WebhookValiator.call(header_signature, payload, webhook_secret)
+        Urlbox::WebhookValidator.call(header_signature, payload, webhook_secret)
       end
 
       assert_equal "Invalid signature", e.message
@@ -80,7 +80,7 @@ module Urlbox
       header_signature = "t={invalid_timestamp},sha256=930ee08957512f247e289703ac951fc60da1e2d12919bfd518d90513b0687ee0"
 
       e = assert_raises Urlbox::InvalidHeaderSignatureError do
-        Urlbox::WebhookValiator.call(header_signature, payload, webhook_secret)
+        Urlbox::WebhookValidator.call(header_signature, payload, webhook_secret)
       end
 
       assert_equal "Invalid timestamp", e.message
@@ -91,7 +91,7 @@ module Urlbox
       header_signature = "t=#{timestamp_ten_minute_ago},sha256=930ee08957512f247e289703ac951fc60da1e2d12919bfd518d90513b0687ee0"
 
       e = assert_raises Urlbox::InvalidHeaderSignatureError do
-        Urlbox::WebhookValiator.call(header_signature, payload, webhook_secret)
+        Urlbox::WebhookValidator.call(header_signature, payload, webhook_secret)
       end
 
       assert_equal "Invalid timestamp", e.message

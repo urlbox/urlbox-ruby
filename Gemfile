@@ -4,7 +4,8 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'http'
+gem 'http', '~> 5.0'
+gem 'openssl', '~> 2.2'
 
 group :development do
   gem 'minitest'

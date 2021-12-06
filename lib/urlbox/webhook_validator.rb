@@ -1,7 +1,7 @@
 require 'urlbox/errors'
 
 module Urlbox
-  class WebhookValiator
+  class WebhookValidator
     SIGNATURE_REGEX = /^sha256=[0-9a-zA-Z]{40,}$/.freeze
     TIMESTAMP_REGEX = /^t=[0-9]+$/.freeze
     WEBHOOK_AGE_MAX_MINUTES = 5
