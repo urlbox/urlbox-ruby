@@ -3,11 +3,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'urlbox'
-  spec.version       = '0.1.0'
+  spec.version       = '0.1.1'
   spec.authors       = ['Alan Donohoe']
-  spec.email         = ['alan@urlbox.io']
+  spec.email         = ['support@urlbox.io']
 
   spec.summary       = 'Ruby wrapper for the Urlbox API'
+  spec.description      = 'Urlbox is the easiest, quickest, screenshot API.  ' \
+                       "See https://www.urlbox.io for details."
   spec.homepage      = 'https://www.urlbox.io'
   spec.license       = 'MIT'
 
