@@ -67,7 +67,7 @@ urlbox_client = Urlbox::Client.newpay(api_key: 'YOUR_API_KEY', api_secret: 'YOUR
 response = Urlbox::Client.get({url: 'http://example.com/'})
 
 # Save your screenshot image to screenshot.png:
-File.write('screenshot.png', response.content)
+File.write('screenshot.png', response.to_s)
 ```
 
 All UrlboxClient methods require at least one argument: a hash that *must include either a "url", or "html" entry*, which the Urlbox API will render as a screenshot.
@@ -102,7 +102,7 @@ response = urlbox_client.get(options)
 # For example, if you requested jpg format, the Content-Type will be image/jpeg
 # and response body will be the actual jpg binary data.
 
-response.content # Your screenshot as binary image data which looks like 👇
+response.to_s # Your screenshot as binary image data which looks like 👇
 ```
 ![image](https://user-images.githubusercontent.com/1453680/143479491-78d8edbc-dfdc-48e3-9ae0-3b59bcf98e2c.png)
 
@@ -117,7 +117,7 @@ Makes a GET request to the Urlbox API to create a screenshot for the url or html
 Example request:
 ```ruby
 response = urlbox_client.get({url: 'http://example.com/'})
-response.content # Your screenshot 🎉
+response.to_s # Your screenshot 🎉
 ```
 
 ### delete(options)
@@ -134,7 +134,7 @@ Example request:
 ```ruby
 response = urlbox_client.head({url: 'http://example.com/'})
 
-puts(response.headers.to_s)
+puts(response.headers)
 
 ```
 
