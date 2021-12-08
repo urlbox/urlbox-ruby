@@ -64,7 +64,7 @@ In your erb/html template, use the screenshot_url generated above:
 ```ruby
 require  'urlbox/client'
 
-urlbox_client = Urlbox::Client.newpay(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
+urlbox_client = Urlbox::Client.new(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
 
 # Make a request to the UrlBox API
 response = Urlbox::Client.get({url: 'http://example.com/'})
