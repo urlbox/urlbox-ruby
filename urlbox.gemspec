@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'urlbox'
-  spec.version       = '1.0.0'
+  spec.version       = '0.1.3'
   spec.authors       = ['Urlbox']
   spec.email         = ['support@urlbox.io']
 
