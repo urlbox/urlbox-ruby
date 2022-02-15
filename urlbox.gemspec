@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'urlbox'
-  spec.version       = '0.1.2'
+  spec.version       = '0.1.3'
   spec.authors       = ['Urlbox']
   spec.email         = ['support@urlbox.io']
 
@@ -28,4 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = '>= 2.5'
+
+  spec.add_runtime_dependency 'http', ['~> 5.0']
+  spec.add_runtime_dependency 'openssl', ['~> 2.2']
 end
