@@ -67,7 +67,7 @@ require  'urlbox/client'
 urlbox_client = Urlbox::Client.new(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
 
 # Make a request to the UrlBox API
-response = Urlbox::Client.get({url: 'http://example.com/'})
+response = urlbox_client.get({url: 'http://example.com/'})
 
 # Save your screenshot image to screenshot.png:
 File.write('screenshot.png', response.to_s)
