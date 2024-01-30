@@ -3,7 +3,7 @@
 ![Tests](https://github.com/urlbox/urlbox-python/actions/workflows/tests.yml/badge.svg)
 ![Linter](https://github.com/urlbox/urlbox-python/actions/workflows/linters.yml/badge.svg)
 
-The Urlbox Ruby gem provides easy access to the <a href="https://urlbox.io/" target="_blank">Urlbox website screenshot API</a> from your Ruby/Rails application.
+The Urlbox Ruby gem provides easy access to the <a href="https://urlbox.com/" target="_blank">Urlbox website screenshot API</a> from your Ruby/Rails application.
 
 Now there's no need to muck around with http clients, etc...
 
@@ -12,7 +12,7 @@ Just initialise the Urlbox::Client and make a screenshot of a URL in seconds.
 
 ## Documentation
 
-See the <a href=https://urlbox.io/docs/overview target="_blank">Urlbox API Docs</a>.
+See the <a href=https://urlbox.com/docs/overview target="_blank">Urlbox API Docs</a>.
 
 ## Requirements
 
@@ -37,7 +37,7 @@ $ gem install urlbox
 
 ## Usage
 
-First, grab your Urlbox API key and API secret* found in your <a href="https://urlbox.io/dashboard/api" target="_blank">Urlbox Dashboard</a>.
+First, grab your Urlbox API key and API secret* found in your <a href="https://urlbox.com/dashboard/api" target="_blank">Urlbox Dashboard</a>.
 
 *\* Requests will be automatically authenticated when you supply your API secret.*
 
@@ -80,7 +80,7 @@ Additional options in the dictionary include:
 "format" can be either: png, jpg or jpeg, avif, webp ,pdf, svg, html  *(defaults to png if not provided).*
 
 "full_page", "width", and many more.
-See all available options here: https://urlbox.io/docs/options
+See all available options here: https://urlbox.com/docs/options
 
 eg:
 ```ruby
@@ -245,4 +245,4 @@ Urlbox::Client.head(...)
 ## Feedback
 
 
-Feel free to contact us if you spot a bug or have any suggestions at: support`[at]`urlbox.io.
+Feel free to contact us if you spot a bug or have any suggestions at: support`[at]`urlbox.com.

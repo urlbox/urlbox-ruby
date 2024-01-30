@@ -5,12 +5,12 @@ Gem::Specification.new do |spec|
   spec.name          = 'urlbox'
   spec.version       = '0.1.3'
   spec.authors       = ['Urlbox']
-  spec.email         = ['support@urlbox.io']
+  spec.email         = ['support@urlbox.com']
 
   spec.summary       = 'Ruby wrapper for the Urlbox API'
   spec.description      = 'Urlbox is the easiest, quickest, screenshot API.  ' \
-                       "See https://www.urlbox.io for details."
-  spec.homepage      = 'https://www.urlbox.io'
+                       "See https://urlbox.com for details."
+  spec.homepage      = 'https://urlbox.com'
   spec.license       = 'MIT'
 
   spec.metadata = {
