@@ -3,7 +3,7 @@ require 'urlbox/errors'
 
 module Urlbox
   class Client
-    BASE_API_URL = 'https://api.urlbox.io/v1/'.freeze
+    BASE_API_URL = 'https://api.urlbox.com/v1/'.freeze
     POST_END_POINT = 'render'.freeze
 
     def initialize(api_key: nil, api_secret: nil, api_host_name: nil)

@@ -172,7 +172,7 @@ Give it a couple of seconds, and you should receive, posted to the webhook_url s
   "event": "render.succeeded",
   "renderId": "2cf5ffe2-7736-4d41-8c30-f13e16d35248",
   "result": {
-    "renderUrl": "https://renders.urlbox.io/urlbox1/renders/61431b47b8538a00086c29dd/2021/11/25/e2dcec18-8353-435c-ba17-b549c849eec5.png"
+    "renderUrl": "https://renders.urlbox.com/urlbox1/renders/61431b47b8538a00086c29dd/2021/11/25/e2dcec18-8353-435c-ba17-b549c849eec5.png"
   },
   "meta": {
     "startTime": "2021-11-25T16:32:32.453Z",
@@ -203,7 +203,7 @@ payload = {
   "event": "render.succeeded",
   "renderId": "794383cd-b09e-4aef-a12b-fadf8aad9d63",
   "result": {
-    "renderUrl": "https://renders.urlbox.io/urlbox1/renders/foo.png"
+    "renderUrl": "https://renders.urlbox.com/urlbox1/renders/foo.png"
   },
   "meta": {
     "startTime": "2021-11-24T16:49:48.307Z",
