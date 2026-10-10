@@ -12,7 +12,7 @@ Just initialise the Urlbox::Client and make a screenshot of a URL in seconds.
 
 ## Documentation
 
-See the <a href=https://urlbox.com/docs/overview target="_blank">Urlbox API Docs</a>.
+See the <a href=https://urlbox.com/docs/ target="_blank">Urlbox API Docs</a>.
 
 ## Requirements
 
