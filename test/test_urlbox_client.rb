@@ -63,7 +63,7 @@ module Urlbox
 
     def test_api_host_name_provided
       param_api_key = 'PARAM_KEY'
-      api_host_name = ['api-eu.urlbox.io', 'api-direct.urlbox.io'].sample
+      api_host_name = ['api-eu.urlbox.com', 'api-direct.urlbox.com'].sample
 
       urlbox_client = Urlbox::Client.new(api_key: param_api_key, api_host_name: api_host_name)
 
@@ -96,7 +96,7 @@ module Urlbox
       param_api_key = 'KEY'
       options = { url: 'https://www.example.com' }
 
-      stub_request(:get, "https://api.urlbox.io/v1/#{param_api_key}/png?format=png&url=https://www.example.com")
+      stub_request(:get, "https://api.urlbox.com/v1/#{param_api_key}/png?format=png&url=https://www.example.com")
         .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
 
       urlbox_client = Urlbox::Client.new(api_key: param_api_key)
@@ -111,7 +111,7 @@ module Urlbox
       param_api_key = 'KEY'
       options = { url: 'www.example.com' }
 
-      stub_request(:get, "https://api.urlbox.io/v1/#{param_api_key}/png?format=png&url=http://www.example.com")
+      stub_request(:get, "https://api.urlbox.com/v1/#{param_api_key}/png?format=png&url=http://www.example.com")
         .to_return(status: 200, body: '', headers: {})
 
       urlbox_client = Urlbox::Client.new(api_key: param_api_key)
@@ -154,7 +154,7 @@ module Urlbox
       url_encoded_options = URI.encode_www_form(options)
       token = OpenSSL::HMAC.hexdigest('sha1', api_secret.encode('UTF-8'), url_encoded_options.encode('UTF-8'))
 
-      stub_request(:get, "https://api.urlbox.io/v1/KEY/#{token}/png?format=png&url=https://www.example.com")
+      stub_request(:get, "https://api.urlbox.com/v1/KEY/#{token}/png?format=png&url=https://www.example.com")
         .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
 
       urlbox_client = Urlbox::Client.new(api_key: api_key, api_secret: api_secret)
@@ -169,7 +169,7 @@ module Urlbox
       param_api_key = 'KEY'
       options = { 'url' => 'https://www.example.com' }
 
-      stub_request(:get, "https://api.urlbox.io/v1/#{param_api_key}/png?format=png&url=https://www.example.com")
+      stub_request(:get, "https://api.urlbox.com/v1/#{param_api_key}/png?format=png&url=https://www.example.com")
         .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
 
       urlbox_client = Urlbox::Client.new(api_key: param_api_key)
@@ -189,7 +189,7 @@ module Urlbox
 
       urlbox_client = Urlbox::Client.new(api_key: api_key)
 
-      stub_request(:get, "https://api.urlbox.io/v1/KEY/png?format=png&header=x-my-second-header=someothervalue&url=https://www.example.com")
+      stub_request(:get, "https://api.urlbox.com/v1/KEY/png?format=png&header=x-my-second-header=someothervalue&url=https://www.example.com")
         .to_return(status: 200, body: "", headers: {})
 
       response = urlbox_client.get(options)
@@ -202,7 +202,7 @@ module Urlbox
       api_key = 'KEY'
       options = { url: 'https://www.example.com' }
 
-      stub_request(:delete, 'https://api.urlbox.io/v1/KEY/png?format=png&url=https://www.example.com')
+      stub_request(:delete, 'https://api.urlbox.com/v1/KEY/png?format=png&url=https://www.example.com')
         .to_return(status: 200, body: '', headers: {})
 
       urlbox_client = Urlbox::Client.new(api_key: api_key)
@@ -225,7 +225,7 @@ module Urlbox
         width: [500, 700].sample
       }
 
-      stub_request(:head, "https://api.urlbox.io/v1/#{api_key}/#{format}?format=#{format}&full_page=#{options[:full_page]}&url=#{url}&width=#{options[:width]}")
+      stub_request(:head, "https://api.urlbox.com/v1/#{api_key}/#{format}?format=#{format}&full_page=#{options[:full_page]}&url=#{url}&width=#{options[:width]}")
         .to_return(status: 200, body: '', headers: {})
 
       urlbox_client = Urlbox::Client.new(api_key: api_key)
@@ -244,7 +244,7 @@ module Urlbox
         webhook_url: 'https://www.example.com/webhook'
       }
 
-      stub_request(:post, 'https://api.urlbox.io/v1/render')
+      stub_request(:post, 'https://api.urlbox.com/v1/render')
         .with(
           body: "{\"url\":\"https://www.example.com\",\"webhook_url\":\"https://www.example.com/webhook\",\"format\":\"png\"}",
           headers: {
@@ -265,7 +265,7 @@ module Urlbox
       api_secret = 'SECRET'
       options = { url: 'https://www.example.com' }
 
-      stub_request(:post, 'https://api.urlbox.io/v1/render')
+      stub_request(:post, 'https://api.urlbox.com/v1/render')
         .with(
           body: "{\"url\":\"https://www.example.com\",\"format\":\"png\"}",
           headers: {
@@ -307,7 +307,7 @@ module Urlbox
 
       urlbox_url = urlbox_client.generate_url(options)
 
-      assert_equal 'https://api.urlbox.io/v1/KEY/png?url=https%3A%2F%2Fwww.example.com&format=png', urlbox_url
+      assert_equal 'https://api.urlbox.com/v1/KEY/png?url=https%3A%2F%2Fwww.example.com&format=png', urlbox_url
     end
 
     def test_generate_url_with_api_key_and_secret
@@ -321,7 +321,7 @@ module Urlbox
 
       urlbox_url = urlbox_client.generate_url(options)
 
-      assert_equal "https://api.urlbox.io/v1/KEY/#{token}/png?url=https%3A%2F%2Fwww.example.com&format=png", urlbox_url
+      assert_equal "https://api.urlbox.com/v1/KEY/#{token}/png?url=https%3A%2F%2Fwww.example.com&format=png", urlbox_url
     end
 
     # test module like methods
@@ -331,7 +331,7 @@ module Urlbox
       options = { url: 'https://www.example.com' }
 
       ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
-        stub_request(:get, "https://api.urlbox.io/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
+        stub_request(:get, "https://api.urlbox.com/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
           .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
 
         response = Urlbox::Client.get(options)
@@ -347,7 +347,7 @@ module Urlbox
       options = { url: 'https://www.example.com' }
 
       ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
-        stub_request(:delete, "https://api.urlbox.io/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
+        stub_request(:delete, "https://api.urlbox.com/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
           .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
 
         response = Urlbox::Client.delete(options)
@@ -363,7 +363,7 @@ module Urlbox
       options = { url: 'https://www.example.com' }
 
       ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
-        stub_request(:head, "https://api.urlbox.io/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
+        stub_request(:head, "https://api.urlbox.com/v1/#{env_var_api_key}/png?format=png&url=https://www.example.com")
           .to_return(status: 200, body: '', headers: { 'content-type': 'image/png' })
 
         response = Urlbox::Client.head(options)
@@ -383,7 +383,7 @@ module Urlbox
       }
 
       ClimateControl.modify URLBOX_API_KEY: api_key, URLBOX_API_SECRET: api_secret do
-        stub_request(:post, 'https://api.urlbox.io/v1/render')
+        stub_request(:post, 'https://api.urlbox.com/v1/render')
           .with(
             body: "{\"url\":\"https://www.example.com\",\"webhook_url\":\"https://www.example.com/webhook\",\"format\":\"png\"}",
             headers: {
@@ -406,7 +406,7 @@ module Urlbox
       ClimateControl.modify URLBOX_API_KEY: env_var_api_key do
         urlbox_url = Urlbox::Client.generate_url(options)
 
-        assert_equal 'https://api.urlbox.io/v1/KEY/png?url=https%3A%2F%2Fwww.example.com&format=png', urlbox_url
+        assert_equal 'https://api.urlbox.com/v1/KEY/png?url=https%3A%2F%2Fwww.example.com&format=png', urlbox_url
       end
     end
   end
